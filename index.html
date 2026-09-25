@@ -67,7 +67,6 @@ body.app-bloqueado {
     transform: translateY(-4px);
 }
 
-
 /* SOMENTE OCULTA "NOTA OFICIAL" DA IMAGEM ATUAL */
 
 .brasao-oficial::after {
@@ -80,7 +79,6 @@ body.app-bloqueado {
     background: #eeeeee;
     z-index: 2;
 }
-
 
 .header h1 {
     margin: 7px 0 4px;
@@ -170,7 +168,7 @@ body.app-bloqueado {
 
 .placas-escolha {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 15px;
 }
 
@@ -256,6 +254,21 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(15,118,110,.12);
 }
 
+/* CAMPO OBRIGATÓRIO NÃO PREENCHIDO */
+
+.campo-erro {
+    border-color: #dc2626 !important;
+    background: #fef2f2 !important;
+    box-shadow: 0 0 0 3px rgba(220,38,38,.16) !important;
+}
+
+.placas-escolha.campo-erro {
+    border: 3px solid #dc2626;
+    background: #fef2f2;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 
 /* =====================================================
    MARCAR TUDO
@@ -283,8 +296,7 @@ textarea:focus {
     background: #15803d;
 }
 
-
-/* =====================================================
+   /* =====================================================
    STATUS
 ===================================================== */
 
@@ -433,7 +445,7 @@ textarea.obs-geral {
 
 .actions {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: 12px;
     margin-top: 20px;
 }
@@ -450,10 +462,6 @@ textarea.obs-geral {
 
 .btn-pdf {
     background: #075985;
-}
-
-.btn-new {
-    background: #dc2626;
 }
 
 .btn:hover {
@@ -480,7 +488,7 @@ textarea.obs-geral {
 
 
 /* =====================================================
-   TELA CHECKAGEM CONCLUÍDA
+   TELA FINAL
 ===================================================== */
 
 #telaFinalizada {
@@ -581,12 +589,11 @@ textarea.obs-geral {
         text-align: left;
         font-size: 13px;
     }
-
 }
 
 
 /* =====================================================
-   IMPRESSÃO
+   IMPRESSÃO / PDF
 ===================================================== */
 
 @media print {
@@ -613,12 +620,16 @@ textarea.obs-geral {
         display: none !important;
     }
 
+    .campo-erro {
+        border-color: #d1d5db !important;
+        background: white !important;
+        box-shadow: none !important;
+    }
 }
 
 </style>
 
 </head>
-
 
 <body>
 
@@ -638,21 +649,17 @@ textarea.obs-geral {
 
     </div>
 
-
     <h1>
         PREFEITURA MUNICIPAL DE CURRAL DE CIMA
     </h1>
-
 
     <h2>
         SECRETARIA MUNICIPAL DE SAÚDE
     </h2>
 
-
     <h3>
         CHECK LIST — AMBULÂNCIA TIPO A
     </h3>
-
 
     <p>
         Controle diário de materiais, equipamentos e oxigenoterapia
@@ -686,16 +693,12 @@ textarea.obs-geral {
         IDENTIFICAÇÃO DA AMBULÂNCIA
     </div>
 
-
     <div class="placa-instrucao">
-
         🚑 SELECIONE A PLACA DA AMBULÂNCIA:
         <span class="required">*</span>
-
     </div>
 
-
-    <div class="placas-escolha">
+    <div class="placas-escolha" id="grupoPlacas">
 
         <div class="placa-option">
 
@@ -714,7 +717,6 @@ textarea.obs-geral {
             </label>
 
         </div>
-
 
         <div class="placa-option">
 
@@ -754,7 +756,6 @@ textarea.obs-geral {
 
         </div>
 
-
         <div>
 
             <label>
@@ -785,7 +786,6 @@ textarea.obs-geral {
         CONTROLE DA CHECAGEM
     </div>
 
-
     <div class="mark-all-area">
 
         <button
@@ -799,7 +799,6 @@ textarea.obs-geral {
 
     </div>
 
-
     <div
         id="status"
         class="status pending"
@@ -811,7 +810,7 @@ textarea.obs-geral {
 
 
 <!-- =====================================================
-     MATERIAIS
+     MATERIAIS E EQUIPAMENTOS
 ===================================================== -->
 
 <div class="card">
@@ -827,13 +826,11 @@ textarea.obs-geral {
             1. VENTILAÇÃO E REANIMAÇÃO
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">AMBU ADULTO</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -841,20 +838,17 @@ textarea.obs-geral {
             <div class="quantity">01 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">MÁSCARA COM RESERVATÓRIO ADULTA</div>
             <div class="quantity">01 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">MÁSCARA COM RESERVATÓRIO INFANTIL</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -871,13 +865,11 @@ textarea.obs-geral {
             2. FLUIDOTERAPIA E ACESSO VENOSO
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">SF 0,9% — 500 ML</div>
             <div class="quantity">05 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -885,13 +877,11 @@ textarea.obs-geral {
             <div class="quantity">05 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">SG 5% — 500 ML</div>
             <div class="quantity">05 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -899,13 +889,11 @@ textarea.obs-geral {
             <div class="quantity">05 DE CD.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">SCALPE</div>
             <div class="quantity">05 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -913,13 +901,11 @@ textarea.obs-geral {
             <div class="quantity">05 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">EQUIPO MACROGOTAS</div>
             <div class="quantity">10 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -927,41 +913,31 @@ textarea.obs-geral {
             <div class="quantity">02 UN.</div>
         </div>
 
-    </div>
-
-
-    <div class="category">
-
-        <div class="category-title">
-            3. OXIGENOTERAPIA E VIAS AÉREAS
+        <!-- NOVO ITEM SOLICITADO -->
+        <div class="item">
+            <input type="checkbox" class="material">
+            <div class="item-name">KIT SONDA</div>
+            <div class="quantity">01 KIT</div>
         </div>
 
+    </div>
+
+       <div class="category">
+
+        <div class="category-title">
+            3. MEDICAÇÃO E ADMINISTRAÇÃO
+        </div>
 
         <div class="item">
             <input type="checkbox" class="material">
-            <div class="item-name">CATETER NASAL</div>
+            <div class="item-name">ÁGUA DESTILADA</div>
             <div class="quantity">05 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
-            <div class="item-name">LÁTEX / EXTENSÃO DE O₂</div>
-            <div class="quantity">03 UN.</div>
-        </div>
-
-
-        <div class="item">
-            <input type="checkbox" class="material">
-            <div class="item-name">MÁSCARA DE NEBULIZAÇÃO</div>
-            <div class="quantity">01 UN.</div>
-        </div>
-
-
-        <div class="item">
-            <input type="checkbox" class="material">
-            <div class="item-name">MÁSCARA DE VENTURI</div>
-            <div class="quantity">01 UN.</div>
+            <div class="item-name">AGULHAS</div>
+            <div class="quantity">05 UN.</div>
         </div>
 
     </div>
@@ -970,30 +946,26 @@ textarea.obs-geral {
     <div class="category">
 
         <div class="category-title">
-            4. MONITORIZAÇÃO E AVALIAÇÃO
+            4. AVALIAÇÃO E MONITORIZAÇÃO
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
-            <div class="item-name">OXÍMETRO</div>
+            <div class="item-name">OXÍMETRO DE PULSO</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
-            <div class="item-name">TERMÔMETRO</div>
+            <div class="item-name">GLICOSÍMETRO</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">ESTETOSCÓPIO E TENSIÔMETRO ADULTO</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1010,13 +982,11 @@ textarea.obs-geral {
             5. TRAUMA E IMOBILIZAÇÃO
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">MANTA TÉRMICA</div>
             <div class="quantity">02 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1024,13 +994,11 @@ textarea.obs-geral {
             <div class="quantity">10 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">ATADURA</div>
             <div class="quantity">10 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1038,20 +1006,11 @@ textarea.obs-geral {
             <div class="quantity">01 DE CD.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">COXINS</div>
             <div class="quantity">01 PAR.</div>
         </div>
-
-
-        <div class="item">
-            <input type="checkbox" class="material">
-            <div class="item-name">KED ADULTO</div>
-            <div class="quantity">01 UN.</div>
-        </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1068,13 +1027,11 @@ textarea.obs-geral {
             6. PARTO E CUIDADOS GERAIS
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">KIT PARTO</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1082,24 +1039,15 @@ textarea.obs-geral {
             <div class="quantity">01 UN.</div>
         </div>
 
-
-        <div class="item">
-            <input type="checkbox" class="material">
-            <div class="item-name">LENÇOL DESCARTÁVEL</div>
-            <div class="quantity">10 UN.</div>
-        </div>
-
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">LENÇOL</div>
             <div class="quantity">02 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
-            <div class="item-name">FRALDA DESCARTÁVEL</div>
+            <div class="item-name">TRAVESSEIRO</div>
             <div class="quantity">01 UN.</div>
         </div>
 
@@ -1109,9 +1057,8 @@ textarea.obs-geral {
     <div class="category">
 
         <div class="category-title">
-            7. PROTEÇÃO E HIGIENE
+            7. MATERIAIS DE APOIO
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1119,13 +1066,11 @@ textarea.obs-geral {
             <div class="quantity">01 CX.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">MÁSCARA DESCARTÁVEL</div>
             <div class="quantity">01 CX.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1133,13 +1078,11 @@ textarea.obs-geral {
             <div class="quantity">01 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">CUBA RIM</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1147,13 +1090,11 @@ textarea.obs-geral {
             <div class="quantity">01 UN.</div>
         </div>
 
-
         <div class="item">
             <input type="checkbox" class="material">
             <div class="item-name">ALMOTOLIA PVPI</div>
             <div class="quantity">01 UN.</div>
         </div>
-
 
         <div class="item">
             <input type="checkbox" class="material">
@@ -1170,24 +1111,21 @@ textarea.obs-geral {
             8. CONTROLE DE TORPEDO
         </div>
 
-
         <div class="oxygen-grid">
-
 
             <div class="oxygen-box">
 
-                <h4>
-                    AR COMPRIMIDO
-                </h4>
+                <h4>AR COMPRIMIDO</h4>
 
                 <label>
-                    Quantidade / litros:
+                    Quantidade / libras:
+                    <span class="required">*</span>
                 </label>
 
                 <input
                     type="number"
                     min="0"
-                    placeholder="Informe"
+                    placeholder="Informe em libras"
                     id="arComprimido"
                 >
 
@@ -1196,18 +1134,17 @@ textarea.obs-geral {
 
             <div class="oxygen-box">
 
-                <h4>
-                    O₂ — OXIGÊNIO
-                </h4>
+                <h4>O₂ — OXIGÊNIO</h4>
 
                 <label>
-                    Quantidade / litros:
+                    Quantidade / libras:
+                    <span class="required">*</span>
                 </label>
 
                 <input
                     type="number"
                     min="0"
-                    placeholder="Informe"
+                    placeholder="Informe em libras"
                     id="oxigenio"
                 >
 
@@ -1216,33 +1153,29 @@ textarea.obs-geral {
 
             <div class="oxygen-box">
 
-                <h4>
-                    TORPEDO MÓVEL DE O₂
-                </h4>
+                <h4>TORPEDO MÓVEL DE O₂</h4>
 
                 <label>
-                    Quantidade / litros:
+                    Quantidade / libras:
+                    <span class="required">*</span>
                 </label>
 
                 <input
                     type="number"
                     min="0"
-                    placeholder="Informe"
+                    placeholder="Informe em libras"
                     id="torpedoMovel"
                 >
 
             </div>
 
-
         </div>
 
     </div>
 
-
 </div>
 
-
-<!-- =====================================================
+   <!-- =====================================================
      PENDÊNCIAS
 ===================================================== -->
 
@@ -1251,7 +1184,6 @@ textarea.obs-geral {
     <div class="card-title">
         ITENS PENDENTES / OBSERVAÇÕES
     </div>
-
 
     <div id="pendencias">
 
@@ -1274,7 +1206,6 @@ textarea.obs-geral {
         OBSERVAÇÕES — ITENS NÃO MARCADOS
     </div>
 
-
     <textarea
         id="observacaoGeral"
         class="obs-geral"
@@ -1285,13 +1216,13 @@ textarea.obs-geral {
 
 
 <!-- =====================================================
-     BOTÕES
+     FINALIZAÇÃO
 ===================================================== -->
 
 <div class="actions">
 
-
     <button
+        type="button"
         class="btn btn-pdf"
         id="btnPDF"
         onclick="baixarPDF()"
@@ -1299,24 +1230,17 @@ textarea.obs-geral {
         📄 BAIXAR / SALVAR PDF
     </button>
 
-
-    <button
-        class="btn btn-new"
-        id="btnNova"
-        onclick="novaChecagem()"
-    >
-        ✅ CHECAGEM FINALIZADA
-    </button>
-
-
 </div>
 
 
 <div class="footer">
 
     Checklist digital — Ambulância Tipo A
+
     <br>
-    Prefeitura Municipal de Curral de Cima — Secretaria Municipal de Saúde
+
+    Prefeitura Municipal de Curral de Cima —
+    Secretaria Municipal de Saúde
 
 </div>
 
@@ -1325,7 +1249,7 @@ textarea.obs-geral {
 
 
 <!-- =====================================================
-     TELA DE CHECAGEM CONCLUÍDA
+     TELA FINAL APÓS O PDF
 ===================================================== -->
 
 <div id="telaFinalizada">
@@ -1333,31 +1257,31 @@ textarea.obs-geral {
     <div class="final-box">
 
         <div class="final-icon">
-            🔒
+            ✅
         </div>
 
-
         <h2>
-            CHECAGEM CONCLUÍDA
+            CHECK LIST FINALIZADO
         </h2>
 
-
         <p>
-            A checagem desta ambulância foi finalizada.
+            O check-list desta ambulância foi finalizado
+            e o relatório em PDF foi gerado.
         </p>
 
-
         <p>
-            O aplicativo foi bloqueado para impedir
-            qualquer alteração após a conclusão.
+            Os dados desta checagem não poderão mais
+            ser alterados nesta sessão.
         </p>
-
 
         <div class="final-warning">
 
-            ⚠️ PARA REALIZAR UMA NOVA CHECAGEM,
-            FECHE ESTA TELA/ABA E ABRA NOVAMENTE
-            O APLICATIVO.
+            CHECK LIST FINALIZADO.
+
+            <br><br>
+
+            FECHE O APLICATIVO E ABRA NOVAMENTE
+            PARA REALIZAR UM NOVO CHECK-LIST.
 
         </div>
 
@@ -1369,58 +1293,25 @@ textarea.obs-geral {
 <script>
 
 /* =====================================================
-   VARIÁVEIS
-===================================================== */
-
-const checkboxes =
-    document.querySelectorAll('.material');
-
-let aplicativoFinalizado = false;
-
-
-/* =====================================================
-   VERIFICAR SE JÁ ESTÁ BLOQUEADO
-===================================================== */
-
-if (
-    sessionStorage.getItem(
-        'checklistFinalizado'
-    ) === 'sim'
-) {
-
-    aplicativoFinalizado = true;
-
-    document.addEventListener(
-        'DOMContentLoaded',
-        function() {
-
-            bloquearVisualmente();
-
-        }
-    );
-
-}
-
-
-/* =====================================================
    DATA E HORA
 ===================================================== */
 
 function atualizarDataHora() {
 
-    const agora = new Date();
+    const agora =
+        new Date();
 
+    const opcoesData = {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    };
 
     const data =
         agora.toLocaleDateString(
             'pt-BR',
-            {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            }
+            opcoesData
         );
-
 
     const hora =
         agora.toLocaleTimeString(
@@ -1432,20 +1323,18 @@ function atualizarDataHora() {
             }
         );
 
-
-    document.getElementById(
-        'dataHora'
-    ).innerHTML =
-        '📅 Data: ' +
+    document
+        .getElementById('dataHora')
+        .textContent =
+        'Data: ' +
         data +
-        ' &nbsp;&nbsp; | &nbsp;&nbsp; ⏰ Horário: ' +
+        ' — Hora: ' +
         hora;
 
 }
 
 
 atualizarDataHora();
-
 
 setInterval(
     atualizarDataHora,
@@ -1454,49 +1343,142 @@ setInterval(
 
 
 /* =====================================================
-   CHECKBOXES
+   ELEMENTOS PRINCIPAIS
 ===================================================== */
 
-checkboxes.forEach(
-    checkbox => {
+const materiais =
+    Array.from(
+        document.querySelectorAll(
+            '.material'
+        )
+    );
 
-        checkbox.addEventListener(
-            'change',
-            atualizarPendencias
-        );
+const statusBox =
+    document.getElementById(
+        'status'
+    );
 
-    }
-);
+const btnMarcar =
+    document.getElementById(
+        'btnMarcar'
+    );
+
+const pendenciasBox =
+    document.getElementById(
+        'pendencias'
+    );
+
+const observacaoGeral =
+    document.getElementById(
+        'observacaoGeral'
+    );
 
 
 /* =====================================================
-   MARCAR TUDO
+   NOME DO MATERIAL
+===================================================== */
+
+function obterNomeMaterial(
+    checkbox
+) {
+
+    const item =
+        checkbox.closest(
+            '.item'
+        );
+
+    if (!item) {
+        return 'Item';
+    }
+
+    const nome =
+        item.querySelector(
+            '.item-name'
+        );
+
+    if (!nome) {
+        return 'Item';
+    }
+
+    return nome
+        .textContent
+        .trim();
+
+}
+
+
+/* =====================================================
+   ATUALIZAR STATUS
+===================================================== */
+
+function atualizarStatus() {
+
+    const total =
+        materiais.length;
+
+    const marcados =
+        materiais.filter(
+            item => item.checked
+        ).length;
+
+    if (
+        marcados === total &&
+        total > 0
+    ) {
+
+        statusBox
+            .className =
+            'status ok';
+
+        statusBox
+            .textContent =
+            '✓ Todos os materiais foram conferidos.';
+
+        btnMarcar
+            .textContent =
+            '↺ DESMARCAR TUDO';
+
+    } else {
+
+        statusBox
+            .className =
+            'status pending';
+
+        statusBox
+            .textContent =
+            'Existem ' +
+            (total - marcados) +
+            ' item(ns) pendente(s).';
+
+        btnMarcar
+            .textContent =
+            '✓ MARCAR TUDO';
+
+    }
+
+}
+
+
+/* =====================================================
+   MARCAR / DESMARCAR TUDO
 ===================================================== */
 
 function marcarTodos() {
 
-    if (aplicativoFinalizado) {
-        return;
-    }
-
-
     const todosMarcados =
-        Array.from(checkboxes)
-        .every(
-            checkbox =>
-                checkbox.checked
+        materiais.length > 0 &&
+        materiais.every(
+            item => item.checked
         );
 
-
-    checkboxes.forEach(
-        checkbox => {
-
-            checkbox.checked =
+    materiais.forEach(
+        item => {
+            item.checked =
                 !todosMarcados;
-
         }
     );
 
+    atualizarStatus();
 
     atualizarPendencias();
 
@@ -1504,520 +1486,505 @@ function marcarTodos() {
 
 
 /* =====================================================
-   VERIFICAR TODOS
+   PENDÊNCIAS
 ===================================================== */
 
-function todosItensMarcados() {
+function atualizarPendencias() {
 
-    return Array.from(
-        checkboxes
-    ).every(
-        checkbox =>
-            checkbox.checked
+    const naoMarcados =
+        materiais.filter(
+            item => !item.checked
+        );
+
+    pendenciasBox
+        .innerHTML =
+        '';
+
+    if (
+        naoMarcados.length === 0
+    ) {
+
+        pendenciasBox
+            .innerHTML =
+            '<p style="text-align:center;color:#166534;font-weight:bold;">✓ Nenhum item pendente.</p>';
+
+        observacaoGeral.value =
+            '';
+
+        return;
+
+    }
+
+    naoMarcados.forEach(
+        (
+            checkbox,
+            indice
+        ) => {
+
+            const nome =
+                obterNomeMaterial(
+                    checkbox
+                );
+
+            const bloco =
+                document.createElement(
+                    'div'
+                );
+
+            bloco.className =
+                'pending-item';
+
+            const titulo =
+                document.createElement(
+                    'div'
+                );
+
+            titulo.className =
+                'pending-name';
+
+            titulo.textContent =
+                nome;
+
+            const textarea =
+                document.createElement(
+                    'textarea'
+                );
+
+            textarea.placeholder =
+                'Informe a situação deste item...';
+
+            textarea.dataset
+                .material =
+                nome;
+
+            textarea.addEventListener(
+                'input',
+                atualizarObservacaoGeral
+            );
+
+            bloco.appendChild(
+                titulo
+            );
+
+            bloco.appendChild(
+                textarea
+            );
+
+            pendenciasBox.appendChild(
+                bloco
+            );
+
+        }
     );
+
+    atualizarObservacaoGeral();
 
 }
 
 
 /* =====================================================
-   ATUALIZAR PENDÊNCIAS
+   OBSERVAÇÃO AUTOMÁTICA
 ===================================================== */
 
-function atualizarPendencias() {
+function atualizarObservacaoGeral() {
 
-    const container =
-        document.getElementById(
-            'pendencias'
+    const campos =
+        Array.from(
+            pendenciasBox
+            .querySelectorAll(
+                'textarea'
+            )
         );
 
+    if (
+        campos.length === 0
+    ) {
 
-    const observacao =
-        document.getElementById(
-            'observacaoGeral'
-        );
+        observacaoGeral.value =
+            '';
 
+        return;
 
-    const itensPendentes = [];
+    }
 
+    const linhas =
+        campos.map(
+            campo => {
 
-    checkboxes.forEach(
-        checkbox => {
+                const material =
+                    campo.dataset
+                    .material ||
+                    'Item';
 
-            if (!checkbox.checked) {
+                const texto =
+                    campo.value
+                    .trim();
 
-                const item =
-                    checkbox.closest(
-                        '.item'
+                if (texto) {
+
+                    return (
+                        material +
+                        ': ' +
+                        texto
                     );
 
+                }
 
-                const nome =
-                    item.querySelector(
-                        '.item-name'
-                    ).innerText;
-
-
-                itensPendentes.push(
-                    nome
+                return (
+                    material +
+                    ': PENDENTE'
                 );
+
+            }
+        );
+
+    observacaoGeral.value =
+        linhas.join(
+            '\n'
+        );
+
+}
+
+
+/* =====================================================
+   EVENTOS DOS MATERIAIS
+===================================================== */
+
+materiais.forEach(
+    item => {
+
+        item.addEventListener(
+            'change',
+            function() {
+
+                atualizarStatus();
+
+                atualizarPendencias();
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   REMOVER DESTAQUE VERMELHO AO CORRIGIR
+===================================================== */
+
+function removerErroAoPreencher(
+    elemento
+) {
+
+    if (!elemento) {
+        return;
+    }
+
+    elemento.addEventListener(
+        'input',
+        function() {
+
+            if (
+                this.value
+                .trim() !== ''
+            ) {
+
+                this.classList
+                    .remove(
+                        'campo-erro'
+                    );
 
             }
 
         }
     );
 
-
-    /* -----------------------------------------
-       LISTA DE PENDÊNCIAS
-    ----------------------------------------- */
-
-    container.innerHTML = '';
+}
 
 
-    if (
-        itensPendentes.length === 0
-    ) {
+removerErroAoPreencher(
+    document.getElementById(
+        'enfermeiro'
+    )
+);
 
-        container.innerHTML = `
-            <div class="status ok">
-                ✓ TODOS OS ITENS FORAM CONFERIDOS
-            </div>
-        `;
+removerErroAoPreencher(
+    document.getElementById(
+        'coren'
+    )
+);
 
-    } else {
+removerErroAoPreencher(
+    document.getElementById(
+        'arComprimido'
+    )
+);
 
+removerErroAoPreencher(
+    document.getElementById(
+        'oxigenio'
+    )
+);
 
-        itensPendentes.forEach(
-            (nome, index) => {
-
-                const div =
-                    document.createElement(
-                        'div'
-                    );
-
-
-                div.className =
-                    'pending-item';
-
-
-                div.innerHTML = `
-                    <div class="pending-name">
-                        ⚠️ ${nome}
-                    </div>
-
-                    <textarea
-                        id="pendencia-${index}"
-                        placeholder="Informe a quantidade em falta ou observação..."
-                    ></textarea>
-                `;
+removerErroAoPreencher(
+    document.getElementById(
+        'torpedoMovel'
+    )
+);
 
 
-                container.appendChild(
-                    div
-                );
+/* =====================================================
+   REMOVER VERMELHO DA PLACA QUANDO SELECIONADA
+===================================================== */
 
-            }
-        );
+document
+    .querySelectorAll(
+        'input[name="placa"]'
+    )
+    .forEach(
+        radio => {
 
-    }
+            radio.addEventListener(
+                'change',
+                function() {
 
+                    document
+                        .getElementById(
+                            'grupoPlacas'
+                        )
+                        .classList
+                        .remove(
+                            'campo-erro'
+                        );
 
-    /* -----------------------------------------
-       CAMPO OBSERVAÇÃO AUTOMÁTICO
-    ----------------------------------------- */
+                }
+            );
 
-    if (
-        itensPendentes.length > 0
-    ) {
+        }
+    );
 
-        observacao.value =
-            'ITENS NÃO MARCADOS:\n\n' +
-            itensPendentes
-                .map(
-                    (item, index) =>
-                        (index + 1) +
-                        '. ' +
-                        item
-                )
-                .join('\n');
+   /* =====================================================
+   DESTACAR E RETORNAR AO CAMPO COM ERRO
+===================================================== */
 
-    } else {
+function mostrarCampoErro(
+    elemento,
+    mensagem
+) {
 
-        observacao.value =
-            'ITENS NÃO MARCADOS:\n\n' +
-            'NENHUM — TODOS OS ITENS FORAM MARCADOS.';
+    elemento.classList.add(
+        'campo-erro'
+    );
 
-    }
+    alert(
+        mensagem
+    );
 
+    elemento.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
 
-    /* -----------------------------------------
-       STATUS
-    ----------------------------------------- */
-
-    const status =
-        document.getElementById(
-            'status'
-        );
-
-
-    const botao =
-        document.getElementById(
-            'btnMarcar'
-        );
-
-
-    const btnPDF =
-        document.getElementById(
-            'btnPDF'
-        );
-
-
-    if (
-        itensPendentes.length === 0
-    ) {
-
-        status.className =
-            'status ok';
-
-
-        status.innerHTML =
-            '✓ TODOS OS ITENS FORAM MARCADOS — CHECKLIST PRONTO PARA FINALIZAR';
-
-
-        botao.innerHTML =
-            '↩️ DESMARCAR TUDO';
-
-
-        btnPDF.disabled =
-            false;
-
-    } else {
-
-        status.className =
-            'status pending';
-
-
-        status.innerHTML =
-            '⚠️ ' +
-            itensPendentes.length +
-            ' ITEM(NS) PENDENTE(S) — FINALIZAÇÃO BLOQUEADA';
-
-
-        botao.innerHTML =
-            '✓ MARCAR TUDO';
-
-
-        btnPDF.disabled =
-            true;
-
-    }
+    setTimeout(
+        function() {
+            elemento.focus();
+        },
+        400
+    );
 
 }
 
 
 /* =====================================================
-   PEGAR PLACA
+   VALIDAR CAMPOS OBRIGATÓRIOS
 ===================================================== */
 
-function obterPlaca() {
+function validarCampos() {
+
+    /* PLACA */
 
     const placaSelecionada =
         document.querySelector(
             'input[name="placa"]:checked'
         );
 
-
-    if (!placaSelecionada) {
-        return '';
-    }
-
-
-    return placaSelecionada.value;
-
-}
-
-
-/* =====================================================
-   VALIDAÇÃO COMPLETA PARA PDF
-===================================================== */
-
-function validarFormulario() {
-
-    if (
-        aplicativoFinalizado
-    ) {
-
-        alert(
-            'CHECAGEM CONCLUÍDA. O aplicativo está bloqueado. Feche a tela e abra novamente o aplicativo para uma nova checagem.'
+    const grupoPlacas =
+        document.getElementById(
+            'grupoPlacas'
         );
 
-        return false;
+    if (!placaSelecionada) {
 
-    }
-
-
-    /* -----------------------------------------
-       PLACA
-    ----------------------------------------- */
-
-    const placa =
-        obterPlaca();
-
-
-    if (!placa) {
+        grupoPlacas.classList.add(
+            'campo-erro'
+        );
 
         alert(
             'Selecione a placa da ambulância.'
         );
 
+        grupoPlacas.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
 
-        document
-            .getElementById(
-                'placaQFS'
-            )
-            .focus();
-
+        setTimeout(
+            function() {
+                document
+                    .getElementById(
+                        'placaQFS'
+                    )
+                    .focus();
+            },
+            400
+        );
 
         return false;
 
     }
 
 
-    /* -----------------------------------------
-       ENFERMEIRO
-    ----------------------------------------- */
+    /* ENFERMEIRO */
 
     const enfermeiro =
-        document
-        .getElementById(
+        document.getElementById(
             'enfermeiro'
-        )
-        .value
-        .trim();
-
-
-    if (!enfermeiro) {
-
-        alert(
-            'Informe o nome do enfermeiro.'
         );
-
-
-        document
-            .getElementById(
-                'enfermeiro'
-            )
-            .focus();
-
-
-        return false;
-
-    }
-
-
-    const partes =
-        enfermeiro.split(
-            /\s+/
-        );
-
 
     if (
-        partes.length < 2
+        enfermeiro.value
+        .trim() === ''
     ) {
 
-        alert(
-            'Digite o nome completo do enfermeiro.'
+        mostrarCampoErro(
+            enfermeiro,
+            'Digite o nome do enfermeiro.'
         );
-
-
-        document
-            .getElementById(
-                'enfermeiro'
-            )
-            .focus();
-
 
         return false;
 
     }
 
 
-    /* -----------------------------------------
-       COREN
-    ----------------------------------------- */
+    /* COREN */
 
     const coren =
-        document
-        .getElementById(
+        document.getElementById(
             'coren'
-        )
-        .value
-        .trim();
-
-
-    if (!coren) {
-
-        alert(
-            'Informe o número do COREN-PB.'
         );
 
+    if (
+        coren.value
+        .trim() === ''
+    ) {
 
-        document
-            .getElementById(
-                'coren'
-            )
-            .focus();
-
+        mostrarCampoErro(
+            coren,
+            'Digite o número do COREN-PB.'
+        );
 
         return false;
 
     }
 
 
-    /* -----------------------------------------
-       MATERIAIS
-    ----------------------------------------- */
+    /* MATERIAIS */
 
     const primeiroNaoMarcado =
-        Array.from(
-            checkboxes
-        ).find(
-            checkbox =>
-                !checkbox.checked
+        materiais.find(
+            item => !item.checked
         );
 
-
-    if (
-        primeiroNaoMarcado
-    ) {
+    if (primeiroNaoMarcado) {
 
         alert(
-            'Não é possível salvar o PDF enquanto houver materiais sem marcação. Marque todos os itens.'
+            'Existem materiais sem marcação. Confira os itens pendentes antes de gerar o PDF.'
         );
 
-
         atualizarPendencias();
-
-
-        primeiroNaoMarcado.focus();
-
 
         primeiroNaoMarcado.scrollIntoView({
             behavior: 'smooth',
             block: 'center'
         });
 
+        setTimeout(
+            function() {
+                primeiroNaoMarcado.focus();
+            },
+            400
+        );
 
         return false;
 
     }
 
 
-    /* -----------------------------------------
-       TORPEDO — AR COMPRIMIDO
-    ----------------------------------------- */
+    /* AR COMPRIMIDO */
 
     const arComprimido =
-        document
-        .getElementById(
+        document.getElementById(
             'arComprimido'
         );
 
-
     if (
-        arComprimido.value.trim() === ''
+        arComprimido.value
+        .trim() === ''
     ) {
 
-        alert(
-            'Informe a quantidade em litros do AR COMPRIMIDO.'
+        mostrarCampoErro(
+            arComprimido,
+            'Informe a quantidade em libras do AR COMPRIMIDO.'
         );
-
-
-        arComprimido.focus();
-
-
-        arComprimido.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
-
 
         return false;
 
     }
 
 
-    /* -----------------------------------------
-       TORPEDO — OXIGÊNIO
-    ----------------------------------------- */
+    /* OXIGÊNIO */
 
     const oxigenio =
-        document
-        .getElementById(
+        document.getElementById(
             'oxigenio'
         );
 
-
     if (
-        oxigenio.value.trim() === ''
+        oxigenio.value
+        .trim() === ''
     ) {
 
-        alert(
-            'Informe a quantidade em litros do O₂ — OXIGÊNIO.'
+        mostrarCampoErro(
+            oxigenio,
+            'Informe a quantidade em libras do O₂ — OXIGÊNIO.'
         );
-
-
-        oxigenio.focus();
-
-
-        oxigenio.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
-
 
         return false;
 
     }
 
 
-    /* -----------------------------------------
-       TORPEDO MÓVEL
-    ----------------------------------------- */
+    /* TORPEDO MÓVEL */
 
     const torpedoMovel =
-        document
-        .getElementById(
+        document.getElementById(
             'torpedoMovel'
         );
 
-
     if (
-        torpedoMovel.value.trim() === ''
+        torpedoMovel.value
+        .trim() === ''
     ) {
 
-        alert(
-            'Informe a quantidade em litros do TORPEDO MÓVEL DE O₂.'
+        mostrarCampoErro(
+            torpedoMovel,
+            'Informe a quantidade em libras do TORPEDO MÓVEL DE O₂.'
         );
-
-
-        torpedoMovel.focus();
-
-
-        torpedoMovel.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
-
 
         return false;
 
     }
 
-
-    /* -----------------------------------------
-       TUDO PREENCHIDO
-    ----------------------------------------- */
 
     return true;
 
@@ -2025,214 +1992,60 @@ function validarFormulario() {
 
 
 /* =====================================================
-   BLOQUEAR VISUALMENTE
-===================================================== */
-
-function bloquearVisualmente() {
-
-    aplicativoFinalizado =
-        true;
-
-
-    const campos =
-        document.querySelectorAll(
-            'input, textarea, select, button'
-        );
-
-
-    campos.forEach(
-        campo => {
-
-            campo.disabled =
-                true;
-
-        }
-    );
-
-
-    document
-        .getElementById(
-            'telaFinalizada'
-        )
-        .style.display =
-        'flex';
-
-
-    document.body.classList.add(
-        'app-bloqueado'
-    );
-
-}
-
-
-/* =====================================================
-   FINALIZAR APLICATIVO
-===================================================== */
-
-function finalizarAplicativo() {
-
-    sessionStorage.setItem(
-        'checklistFinalizado',
-        'sim'
-    );
-
-
-    bloquearVisualmente();
-
-}
-
-
-/* =====================================================
-   PDF
+   BAIXAR / SALVAR PDF
 ===================================================== */
 
 function baixarPDF() {
 
     if (
-        !validarFormulario()
+        !validarCampos()
     ) {
+
         return;
+
     }
 
+    atualizarStatus();
 
-    /*
-       Somente chega aqui quando
-       TODOS os campos foram preenchidos.
-    */
+    atualizarPendencias();
 
     window.print();
 
-}
-
-
-/* =====================================================
-   APÓS SALVAR / FECHAR IMPRESSÃO
-===================================================== */
-
-window.addEventListener(
-    'afterprint',
-    function() {
-
-        if (
-            !aplicativoFinalizado
-        ) {
-
-            finalizarAplicativo();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   CHECAGEM FINALIZADA
-===================================================== */
-
-function novaChecagem() {
-
-    if (
-        aplicativoFinalizado
-    ) {
-
-        alert(
-            'CHECAGEM CONCLUÍDA. Feche esta tela e abra novamente o aplicativo para iniciar uma nova checagem.'
-        );
-
-
-        return;
-
-    }
-
-
-    const confirmar =
-        confirm(
-            'Deseja iniciar uma nova checagem? Todos os dados preenchidos serão apagados.'
-        );
-
-
-    if (!confirmar) {
-        return;
-    }
-
-
-    limparFormulario();
+    finalizarCheckList();
 
 }
 
 
 /* =====================================================
-   LIMPAR FORMULÁRIO
+   FINALIZAR CHECK-LIST
 ===================================================== */
 
-function limparFormulario() {
-
-    document
-        .getElementById(
-            'enfermeiro'
-        )
-        .value = '';
-
-
-    document
-        .getElementById(
-            'coren'
-        )
-        .value = '';
-
-
-    document
-        .getElementById(
-            'arComprimido'
-        )
-        .value = '';
-
-
-    document
-        .getElementById(
-            'oxigenio'
-        )
-        .value = '';
-
-
-    document
-        .getElementById(
-            'torpedoMovel'
-        )
-        .value = '';
-
+function finalizarCheckList() {
 
     document
         .querySelectorAll(
-            'input[name="placa"]'
+            'input, textarea, button'
         )
         .forEach(
-            radio => {
+            elemento => {
 
-                radio.checked =
-                    false;
+                elemento.disabled =
+                    true;
 
             }
         );
 
-
-    checkboxes.forEach(
-        checkbox => {
-
-            checkbox.checked =
-                false;
-
-        }
+    document.body.classList.add(
+        'app-bloqueado'
     );
 
+    const telaFinalizada =
+        document.getElementById(
+            'telaFinalizada'
+        );
 
-    atualizarPendencias();
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    telaFinalizada.style.display =
+        'flex';
 
 }
 
@@ -2241,22 +2054,14 @@ function limparFormulario() {
    INICIALIZAÇÃO
 ===================================================== */
 
+atualizarStatus();
+
 atualizarPendencias();
 
-
-if (
-    sessionStorage.getItem(
-        'checklistFinalizado'
-    ) === 'sim'
-) {
-
-    bloquearVisualmente();
-
-}
-
 </script>
-
 
 </body>
 
 </html>
+
+   
