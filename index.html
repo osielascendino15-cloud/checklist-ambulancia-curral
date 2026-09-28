@@ -66,8 +66,6 @@ body.app-bloqueado {
     transform: translateY(-4px);
 }
 
-/* SOMENTE OCULTA "NOTA OFICIAL" DA IMAGEM ATUAL */
-
 .brasao-oficial::after {
     content: "";
     position: absolute;
@@ -253,8 +251,6 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(15,118,110,.12);
 }
 
-/* CAMPO OBRIGATÓRIO NÃO PREENCHIDO */
-
 .campo-erro {
     border: 3px solid #dc2626 !important;
     background: #fef2f2 !important;
@@ -372,7 +368,7 @@ textarea:focus {
 
 
 /* =====================================================
-   TORPEDOS
+   CONTROLE DE TORPEDO
 ===================================================== */
 
 .oxygen-grid {
@@ -476,6 +472,62 @@ textarea:focus {
     background: #94a3b8 !important;
     cursor: not-allowed;
     opacity: .65;
+}
+
+
+/* =====================================================
+   AVISO PERSONALIZADO — OSIEL ASCENDINO
+===================================================== */
+
+#avisoPersonalizado {
+    display: none;
+    position: fixed;
+    z-index: 100000;
+    inset: 0;
+    background: rgba(0,0,0,.50);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.aviso-box {
+    width: 95%;
+    max-width: 430px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.30);
+    overflow: hidden;
+}
+
+.aviso-titulo {
+    background: linear-gradient(90deg, #075985, #0f766e);
+    color: white;
+    padding: 14px 18px;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.aviso-mensagem {
+    padding: 22px 18px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1f2937;
+}
+
+.aviso-botao-area {
+    padding: 0 18px 18px;
+    text-align: right;
+}
+
+.aviso-botao {
+    border: none;
+    background: #075985;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 11px 24px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 
@@ -607,7 +659,8 @@ textarea:focus {
     }
 
     .actions,
-    .mark-all-area {
+    .mark-all-area,
+    #avisoPersonalizado {
         display: none !important;
     }
 
@@ -819,7 +872,7 @@ textarea:focus {
 
 
 <!-- =====================================================
-     MATERIAIS
+     MATERIAIS E EQUIPAMENTOS
 ===================================================== -->
 
 <div class="card">
@@ -1157,9 +1210,7 @@ textarea:focus {
 
             <div class="oxygen-box">
 
-                <h4>
-                    AR COMPRIMIDO
-                </h4>
+                <h4>AR COMPRIMIDO</h4>
 
                 <label>
                     Quantidade / libras:
@@ -1178,9 +1229,7 @@ textarea:focus {
 
             <div class="oxygen-box">
 
-                <h4>
-                    O₂ — OXIGÊNIO
-                </h4>
+                <h4>O₂ — OXIGÊNIO</h4>
 
                 <label>
                     Quantidade / libras:
@@ -1199,9 +1248,7 @@ textarea:focus {
 
             <div class="oxygen-box">
 
-                <h4>
-                    TORPEDO MÓVEL DE O₂
-                </h4>
+                <h4>TORPEDO MÓVEL DE O₂</h4>
 
                 <label>
                     Quantidade / libras:
@@ -1240,7 +1287,7 @@ textarea:focus {
 
 
 <!-- =====================================================
-     BOTÃO SALVAR PDF
+     BOTÃO PDF
 ===================================================== -->
 
 <div class="actions">
@@ -1265,12 +1312,45 @@ textarea:focus {
 
 </div>
 
+</div>
+
+
+<!-- =====================================================
+     AVISO PERSONALIZADO
+===================================================== -->
+
+<div id="avisoPersonalizado">
+
+    <div class="aviso-box">
+
+        <div class="aviso-titulo">
+            OSIEL ASCENDINO
+        </div>
+
+        <div
+            class="aviso-mensagem"
+            id="avisoMensagem"
+        ></div>
+
+        <div class="aviso-botao-area">
+
+            <button
+                type="button"
+                class="aviso-botao"
+                onclick="fecharAviso()"
+            >
+                OK
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
 
 <!-- =====================================================
-     TELA DE CHECAGEM CONCLUÍDA
+     TELA FINALIZADA
 ===================================================== -->
 
 <div id="telaFinalizada">
@@ -1290,8 +1370,7 @@ textarea:focus {
         </p>
 
         <p>
-            O aplicativo foi bloqueado para impedir alterações
-            após a conclusão.
+            O aplicativo foi bloqueado para impedir alterações após a conclusão.
         </p>
 
         <div class="final-warning">
@@ -1318,9 +1397,12 @@ const checkboxes =
 
 let aplicativoFinalizado = false;
 
+let campoParaFocar = null;
+
 /*
- Guarda a observação digitada para cada item.
- Assim, se a lista for atualizada, o texto não é perdido.
+   Guarda a observação de cada item não marcado.
+   Se marcar e depois desmarcar novamente,
+   a observação digitada é preservada.
 */
 const observacoesPendentes = {};
 
@@ -1371,6 +1453,57 @@ setInterval(
 
 
 /* =====================================================
+   AVISO PERSONALIZADO — OSIEL ASCENDINO
+===================================================== */
+
+function mostrarAviso(
+    mensagem,
+    campo = null
+) {
+
+    campoParaFocar = campo;
+
+    document.getElementById(
+        'avisoMensagem'
+    ).textContent = mensagem;
+
+    document.getElementById(
+        'avisoPersonalizado'
+    ).style.display = 'flex';
+}
+
+
+function fecharAviso() {
+
+    document.getElementById(
+        'avisoPersonalizado'
+    ).style.display = 'none';
+
+    if (campoParaFocar) {
+
+        const campo =
+            campoParaFocar;
+
+        campoParaFocar = null;
+
+        campo.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+
+        setTimeout(
+            function() {
+
+                campo.focus();
+
+            },
+            350
+        );
+    }
+}
+
+
+/* =====================================================
    CHECKBOXES
 ===================================================== */
 
@@ -1417,7 +1550,7 @@ function marcarTodos() {
 
 
 /* =====================================================
-   AJUSTAR ALTURA DA OBSERVAÇÃO
+   AJUSTAR ALTURA DAS OBSERVAÇÕES
 ===================================================== */
 
 function ajustarAlturaObservacao(campo) {
@@ -1442,6 +1575,7 @@ function atualizarPendencias() {
 
     const itensPendentes = [];
 
+
     checkboxes.forEach(
         (checkbox, indice) => {
 
@@ -1459,7 +1593,7 @@ function atualizarPendencias() {
 
                 itensPendentes.push({
                     nome: nome,
-                    chave: String(indice)
+                    chave: 'material-' + indice
                 });
             }
         }
@@ -1503,7 +1637,7 @@ function atualizarPendencias() {
                     );
 
                 label.textContent =
-                    'Observação:';
+                    'Observação: *';
 
 
                 const campo =
@@ -1514,8 +1648,14 @@ function atualizarPendencias() {
                 campo.className =
                     'observacao-item';
 
+                campo.dataset.chave =
+                    item.chave;
+
+                campo.dataset.nome =
+                    item.nome;
+
                 campo.placeholder =
-                    'Digite aqui a observação deste item';
+                    'Digite obrigatoriamente a observação deste item';
 
                 campo.value =
                     observacoesPendentes[
@@ -1530,6 +1670,10 @@ function atualizarPendencias() {
                         observacoesPendentes[
                             item.chave
                         ] = campo.value;
+
+                        campo.classList.remove(
+                            'campo-erro'
+                        );
 
                         ajustarAlturaObservacao(
                             campo
@@ -1609,7 +1753,7 @@ function atualizarPendencias() {
         status.innerHTML =
             '⚠️ ' +
             itensPendentes.length +
-            ' ITEM(NS) NÃO MARCADO(S) — SERÃO REGISTRADOS NAS OBSERVAÇÕES';
+            ' ITEM(NS) NÃO MARCADO(S) — PREENCHA AS OBSERVAÇÕES ANTES DE SALVAR O PDF';
 
         botao.innerHTML =
             '✓ MARCAR TUDO';
@@ -1637,8 +1781,7 @@ function obterPlaca() {
 
 
 /* =====================================================
-   RETIRAR MARCAÇÃO VERMELHA
-   QUANDO O CAMPO FOR CORRIGIDO
+   RETIRAR ERRO DOS CAMPOS
 ===================================================== */
 
 function retirarErro(campo) {
@@ -1697,15 +1840,9 @@ function mostrarCampoErro(
         block: 'center'
     });
 
-    setTimeout(
-        function() {
-
-            campo.focus();
-
-            alert(mensagem);
-
-        },
-        400
+    mostrarAviso(
+        mensagem,
+        campo
     );
 
     return false;
@@ -1713,15 +1850,10 @@ function mostrarCampoErro(
 
 
 /* =====================================================
-   ERRO NA SELEÇÃO DA PLACA
+   ERRO NA PLACA
 ===================================================== */
 
 function mostrarErroPlaca() {
-
-    const areaPlacas =
-        document.querySelector(
-            '.placas-escolha'
-        );
 
     const labels =
         document.querySelectorAll(
@@ -1739,29 +1871,23 @@ function mostrarErroPlaca() {
         }
     );
 
+
+    const areaPlacas =
+        document.querySelector(
+            '.placas-escolha'
+        );
+
     areaPlacas.scrollIntoView({
         behavior: 'smooth',
         block: 'center'
     });
 
-    setTimeout(
-        function() {
 
-            const primeiraPlaca =
-                document.getElementById(
-                    'placaQFS'
-                );
-
-            if (primeiraPlaca) {
-                primeiraPlaca.focus();
-            }
-
-            alert(
-                'Selecione a placa da ambulância.'
-            );
-
-        },
-        400
+    mostrarAviso(
+        'Selecione a placa da ambulância.',
+        document.getElementById(
+            'placaQFS'
+        )
     );
 
     return false;
@@ -1784,19 +1910,19 @@ document
             function() {
 
                 document
-                .querySelectorAll(
-                    '.placa-label'
-                )
-                .forEach(
-                    label => {
+                    .querySelectorAll(
+                        '.placa-label'
+                    )
+                    .forEach(
+                        label => {
 
-                        label.style.borderColor =
-                            '';
+                            label.style.borderColor =
+                                '';
 
-                        label.style.background =
-                            '';
-                    }
-                );
+                            label.style.background =
+                                '';
+                        }
+                    );
             }
         );
     }
@@ -1811,7 +1937,7 @@ function validarFormulario() {
 
     if (aplicativoFinalizado) {
 
-        alert(
+        mostrarAviso(
             'CHECAGEM CONCLUÍDA. Feche esta tela e abra novamente o aplicativo para começar um novo check-list.'
         );
 
@@ -1888,7 +2014,7 @@ function validarFormulario() {
     }
 
 
-    /* AR COMPRIMIDO */
+    /* ITEM 8 — AR COMPRIMIDO */
 
     const arComprimido =
         document.getElementById(
@@ -1908,7 +2034,7 @@ function validarFormulario() {
     }
 
 
-    /* OXIGÊNIO */
+    /* ITEM 8 — OXIGÊNIO */
 
     const oxigenio =
         document.getElementById(
@@ -1928,7 +2054,7 @@ function validarFormulario() {
     }
 
 
-    /* TORPEDO MÓVEL */
+    /* ITEM 8 — TORPEDO MÓVEL */
 
     const torpedoMovel =
         document.getElementById(
@@ -1948,14 +2074,70 @@ function validarFormulario() {
     }
 
 
-    /* TUDO CERTO */
+    return true;
+}
+
+
+/* =====================================================
+   VALIDAR OBSERVAÇÕES DOS ITENS NÃO MARCADOS
+===================================================== */
+
+function validarObservacoesPendentes() {
+
+    const camposObservacao =
+        document.querySelectorAll(
+            '.observacao-item'
+        );
+
+
+    for (
+        let i = 0;
+        i < camposObservacao.length;
+        i++
+    ) {
+
+        const campo =
+            camposObservacao[i];
+
+        const texto =
+            campo.value.trim();
+
+
+        if (texto === '') {
+
+            campo.classList.add(
+                'campo-erro'
+            );
+
+            const nomeItem =
+                campo.dataset.nome ||
+                'item não marcado';
+
+
+            campo.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+
+
+            mostrarAviso(
+                'Preencha a observação do item não marcado: ' +
+                nomeItem +
+                '.',
+                campo
+            );
+
+            return false;
+        }
+    }
+
 
     return true;
 }
 
 
 /* =====================================================
-   BLOQUEAR APLICATIVO APÓS O PDF
+   BLOQUEAR APLICATIVO
 ===================================================== */
 
 function bloquearVisualmente() {
@@ -2002,14 +2184,14 @@ function finalizarAplicativo() {
 
 
 /* =====================================================
-   SALVAR / GERAR PDF
+   BAIXAR / SALVAR PDF
 ===================================================== */
 
 function baixarPDF() {
 
     /*
-       PRIMEIRO valida todos os campos obrigatórios.
-       Se algum estiver vazio, o PDF NÃO será aberto.
+       1 — Verifica placa, enfermeiro,
+       COREN e os 3 campos do Item 8.
     */
 
     if (!validarFormulario()) {
@@ -2018,16 +2200,26 @@ function baixarPDF() {
 
 
     /*
-       Atualiza as observações antes da impressão,
-       preservando tudo que foi digitado.
+       2 — Atualiza a relação dos itens
+       que continuam não marcados.
     */
 
     atualizarPendencias();
 
 
     /*
-       Ajusta a altura dos campos para que o texto
-       completo apareça no PDF.
+       3 — NÃO PERMITE PDF se existir
+       observação obrigatória vazia.
+    */
+
+    if (!validarObservacoesPendentes()) {
+        return;
+    }
+
+
+    /*
+       4 — Ajusta as observações para
+       aparecerem completas no PDF.
     */
 
     document
@@ -2045,8 +2237,8 @@ function baixarPDF() {
 
 
     /*
-       SOMENTE depois de todas as validações
-       abre a impressão / salvar PDF.
+       5 — Somente agora libera
+       impressão / salvar como PDF.
     */
 
     window.print();
@@ -2054,7 +2246,7 @@ function baixarPDF() {
 
 
 /* =====================================================
-   APÓS FECHAR A TELA DE IMPRESSÃO / PDF
+   APÓS A IMPRESSÃO / PDF
 ===================================================== */
 
 window.addEventListener(
@@ -2077,7 +2269,7 @@ atualizarPendencias();
 
 
 /* =====================================================
-   SE JÁ FINALIZOU NESTA ABA
+   SE JÁ FOI FINALIZADO NESTA ABA
 ===================================================== */
 
 if (
