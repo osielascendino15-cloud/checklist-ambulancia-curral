@@ -399,11 +399,47 @@ textarea:focus {
 
 
 /* =====================================================
-   OBSERVAÇÕES
+   OBSERVAÇÕES — ITENS NÃO MARCADOS
 ===================================================== */
 
-textarea.obs-geral {
-    min-height: 120px;
+#observacaoGeral {
+    width: 100%;
+}
+
+.pendencia-observacao {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    break-inside: avoid;
+}
+
+.pendencia-nome {
+    font-weight: 800;
+    color: #991b1b;
+    margin-bottom: 10px;
+}
+
+.pendencia-observacao label {
+    color: #075985;
+    font-weight: 800;
+}
+
+.observacao-item {
+    width: 100%;
+    min-height: 70px;
+    resize: vertical;
+    background: white;
+}
+
+.sem-pendencias {
+    background: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+    border-radius: 9px;
+    padding: 12px;
+    font-weight: bold;
 }
 
 
@@ -580,6 +616,15 @@ textarea.obs-geral {
         break-inside: avoid;
     }
 
+    .pendencia-observacao {
+        break-inside: avoid;
+    }
+
+    .observacao-item {
+        resize: none;
+        overflow: visible;
+    }
+
     .header {
         box-shadow: none;
     }
@@ -593,7 +638,7 @@ textarea.obs-geral {
 
 </head>
 
-<body>
+   <body>
 
 <!-- =====================================================
      CABEÇALHO
@@ -784,6 +829,8 @@ textarea.obs-geral {
     </div>
 
 
+    <!-- 1. VENTILAÇÃO E REANIMAÇÃO -->
+
     <div class="category">
 
         <div class="category-title">
@@ -822,6 +869,8 @@ textarea.obs-geral {
 
     </div>
 
+
+    <!-- 2. FLUIDOTERAPIA E ACESSO VENOSO -->
 
     <div class="category">
 
@@ -885,7 +934,10 @@ textarea.obs-geral {
 
     </div>
 
-       <div class="category">
+
+    <!-- 3. OXIGENOTERAPIA E VIAS AÉREAS -->
+
+    <div class="category">
 
         <div class="category-title">
             3. OXIGENOTERAPIA E VIAS AÉREAS
@@ -917,6 +969,8 @@ textarea.obs-geral {
 
     </div>
 
+
+    <!-- 4. MONITORIZAÇÃO E AVALIAÇÃO -->
 
     <div class="category">
 
@@ -950,6 +1004,7 @@ textarea.obs-geral {
 
     </div>
 
+       <!-- 5. TRAUMA E IMOBILIZAÇÃO -->
 
     <div class="category">
 
@@ -996,6 +1051,8 @@ textarea.obs-geral {
     </div>
 
 
+    <!-- 6. PARTO E CUIDADOS GERAIS -->
+
     <div class="category">
 
         <div class="category-title">
@@ -1034,6 +1091,8 @@ textarea.obs-geral {
 
     </div>
 
+
+    <!-- 7. PROTEÇÃO E HIGIENE -->
 
     <div class="category">
 
@@ -1085,6 +1144,8 @@ textarea.obs-geral {
 
     </div>
 
+
+    <!-- 8. CONTROLE DE TORPEDO -->
 
     <div class="category">
 
@@ -1173,12 +1234,7 @@ textarea.obs-geral {
         OBSERVAÇÕES — ITENS NÃO MARCADOS
     </div>
 
-    <textarea
-        id="observacaoGeral"
-        class="obs-geral"
-        placeholder="Os itens não marcados aparecerão automaticamente aqui."
-        readonly
-    ></textarea>
+    <div id="observacaoGeral"></div>
 
 </div>
 
@@ -1190,6 +1246,7 @@ textarea.obs-geral {
 <div class="actions">
 
     <button
+        type="button"
         class="btn btn-pdf"
         id="btnPDF"
         onclick="baixarPDF()"
@@ -1260,6 +1317,12 @@ const checkboxes =
     document.querySelectorAll('.material');
 
 let aplicativoFinalizado = false;
+
+/*
+ Guarda a observação digitada para cada item.
+ Assim, se a lista for atualizada, o texto não é perdido.
+*/
+const observacoesPendentes = {};
 
 
 /* =====================================================
@@ -1354,6 +1417,19 @@ function marcarTodos() {
 
 
 /* =====================================================
+   AJUSTAR ALTURA DA OBSERVAÇÃO
+===================================================== */
+
+function ajustarAlturaObservacao(campo) {
+
+    campo.style.height = 'auto';
+
+    campo.style.height =
+        campo.scrollHeight + 'px';
+}
+
+
+/* =====================================================
    ATUALIZAR ITENS NÃO MARCADOS
 ===================================================== */
 
@@ -1367,7 +1443,7 @@ function atualizarPendencias() {
     const itensPendentes = [];
 
     checkboxes.forEach(
-        checkbox => {
+        (checkbox, indice) => {
 
             if (!checkbox.checked) {
 
@@ -1381,30 +1457,125 @@ function atualizarPendencias() {
                         '.item-name'
                     ).innerText;
 
-                itensPendentes.push(nome);
+                itensPendentes.push({
+                    nome: nome,
+                    chave: String(indice)
+                });
             }
         }
     );
 
 
+    observacao.innerHTML = '';
+
+
     if (itensPendentes.length > 0) {
 
-        observacao.value =
-            'ITENS NÃO MARCADOS:\n\n' +
-            itensPendentes
-            .map(
-                (item, index) =>
+        itensPendentes.forEach(
+            (item, index) => {
+
+                const bloco =
+                    document.createElement(
+                        'div'
+                    );
+
+                bloco.className =
+                    'pendencia-observacao';
+
+
+                const titulo =
+                    document.createElement(
+                        'div'
+                    );
+
+                titulo.className =
+                    'pendencia-nome';
+
+                titulo.textContent =
                     (index + 1) +
                     '. ' +
-                    item
-            )
-            .join('\n');
+                    item.nome;
+
+
+                const label =
+                    document.createElement(
+                        'label'
+                    );
+
+                label.textContent =
+                    'Observação:';
+
+
+                const campo =
+                    document.createElement(
+                        'textarea'
+                    );
+
+                campo.className =
+                    'observacao-item';
+
+                campo.placeholder =
+                    'Digite aqui a observação deste item';
+
+                campo.value =
+                    observacoesPendentes[
+                        item.chave
+                    ] || '';
+
+
+                campo.addEventListener(
+                    'input',
+                    function() {
+
+                        observacoesPendentes[
+                            item.chave
+                        ] = campo.value;
+
+                        ajustarAlturaObservacao(
+                            campo
+                        );
+                    }
+                );
+
+
+                bloco.appendChild(
+                    titulo
+                );
+
+                bloco.appendChild(
+                    label
+                );
+
+                bloco.appendChild(
+                    campo
+                );
+
+                observacao.appendChild(
+                    bloco
+                );
+
+                ajustarAlturaObservacao(
+                    campo
+                );
+            }
+        );
 
     } else {
 
-        observacao.value =
-            'ITENS NÃO MARCADOS:\n\n' +
+        const mensagem =
+            document.createElement(
+                'div'
+            );
+
+        mensagem.className =
+            'sem-pendencias';
+
+        mensagem.textContent =
             'NENHUM — TODOS OS ITENS FORAM MARCADOS.';
+
+        observacao.appendChild(
+            mensagem
+        );
     }
 
 
@@ -1473,6 +1644,7 @@ function obterPlaca() {
 function retirarErro(campo) {
 
     if (campo) {
+
         campo.classList.remove(
             'campo-erro'
         );
@@ -1508,15 +1680,13 @@ function retirarErro(campo) {
 
 
 /* =====================================================
-   DESTACAR CAMPO OBRIGATÓRIO
+   VOLTAR AO CAMPO OBRIGATÓRIO
 ===================================================== */
 
 function mostrarCampoErro(
     campo,
     mensagem
 ) {
-
-    alert(mensagem);
 
     campo.classList.add(
         'campo-erro'
@@ -1529,9 +1699,13 @@ function mostrarCampoErro(
 
     setTimeout(
         function() {
+
             campo.focus();
+
+            alert(mensagem);
+
         },
-        350
+        400
     );
 
     return false;
@@ -1544,19 +1718,10 @@ function mostrarCampoErro(
 
 function mostrarErroPlaca() {
 
-    alert(
-        'Selecione a placa da ambulância.'
-    );
-
     const areaPlacas =
         document.querySelector(
             '.placas-escolha'
         );
-
-    areaPlacas.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-    });
 
     const labels =
         document.querySelectorAll(
@@ -1572,6 +1737,31 @@ function mostrarErroPlaca() {
             label.style.background =
                 '#fef2f2';
         }
+    );
+
+    areaPlacas.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    setTimeout(
+        function() {
+
+            const primeiraPlaca =
+                document.getElementById(
+                    'placaQFS'
+                );
+
+            if (primeiraPlaca) {
+                primeiraPlaca.focus();
+            }
+
+            alert(
+                'Selecione a placa da ambulância.'
+            );
+
+        },
+        400
     );
 
     return false;
@@ -1763,7 +1953,8 @@ function validarFormulario() {
     return true;
 }
 
-   /* =====================================================
+
+/* =====================================================
    BLOQUEAR APLICATIVO APÓS O PDF
 ===================================================== */
 
@@ -1778,6 +1969,7 @@ function bloquearVisualmente() {
 
     campos.forEach(
         campo => {
+
             campo.disabled = true;
         }
     );
@@ -1815,11 +2007,47 @@ function finalizarAplicativo() {
 
 function baixarPDF() {
 
+    /*
+       PRIMEIRO valida todos os campos obrigatórios.
+       Se algum estiver vazio, o PDF NÃO será aberto.
+    */
+
     if (!validarFormulario()) {
         return;
     }
 
+
+    /*
+       Atualiza as observações antes da impressão,
+       preservando tudo que foi digitado.
+    */
+
     atualizarPendencias();
+
+
+    /*
+       Ajusta a altura dos campos para que o texto
+       completo apareça no PDF.
+    */
+
+    document
+        .querySelectorAll(
+            '.observacao-item'
+        )
+        .forEach(
+            campo => {
+
+                ajustarAlturaObservacao(
+                    campo
+                );
+            }
+        );
+
+
+    /*
+       SOMENTE depois de todas as validações
+       abre a impressão / salvar PDF.
+    */
 
     window.print();
 }
@@ -1866,4 +2094,3 @@ if (
 </body>
 
 </html>
-
